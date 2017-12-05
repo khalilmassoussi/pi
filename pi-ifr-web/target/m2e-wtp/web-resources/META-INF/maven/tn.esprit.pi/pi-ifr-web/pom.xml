@@ -19,15 +19,31 @@
 			<artifactId>javaee-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.primefaces</groupId>
-			<artifactId>primefaces</artifactId>
-		</dependency>
+<groupId>org.primefaces</groupId>
+<artifactId>primefaces</artifactId>
+
+</dependency>
+<dependency>
+    <groupId>org.primefaces.extensions</groupId>
+    <artifactId>resources-ckeditor</artifactId>
+    <version>6.1.0</version>
+</dependency>
 		<dependency>
 			<groupId>tn.esprit.pi</groupId>
 			<artifactId>pi-ifr-ejb</artifactId>
 			<type>ejb</type>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+    <groupId>org.primefaces.extensions</groupId>
+    <artifactId>primefaces-extensions</artifactId>
+    <version>6.1.0</version>
+</dependency>
+<dependency>
+    <groupId>org.primefaces.extensions</groupId>
+    <artifactId>resources-ckeditor</artifactId>
+    <version>3.1.0</version>
+</dependency>
 	</dependencies>
 
 	<build>

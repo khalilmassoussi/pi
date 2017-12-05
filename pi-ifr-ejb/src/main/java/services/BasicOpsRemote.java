@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
+import persistence.Articles;
 import persistence.Camp;
 import persistence.Refugee;
 
@@ -17,6 +18,10 @@ Long numberOfFemales(Camp c);
 List refugeesInCamp(Camp c);
 Long countUsersBySexe(String s);
 void updateUser(Refugee user);
+void saveOrUpdateArticle(Articles article);
+List<Articles> findallArticles();
+Articles findArticlesById(int id);
+void deleteArticle(Articles article);
 
 
 }

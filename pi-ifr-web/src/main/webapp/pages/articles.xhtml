@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+     >
+      
+      <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ck="http://code.google.com/ck-jsf-editor"
+	
+	>
+<h:head>
+  <title><ui:insert name="title">Default title</ui:insert></title>
+</h:head>
+
+<h:body>
+
+<div id="header">
+    <ui:insert name="header">
+    	
+    	<!--  include your header file or uncomment the include below and create header.xhtml in this directory -->
+    	<!-- <ui:include src="header.xhtml"/> -->
+    </ui:insert>
+</div>
+
+
+<div id="content">
+  <ui:insert name="content">
+    	<h:form>
+    	<h:commandButton action="#{articleBean.doSelect()}" value="New" rendered="#{not articleBean.showCreate}"  >
+						
+					</h:commandButton>
+			<h:dataTable value="#{articleBean.articles}" var="r" border="2" rendered="#{not articleBean.showCreate}">
+			
+			<h:column>
+					<f:facet name="header">
+						<h:outputText value="Title" />
+					</f:facet>
+					<h:outputText value="#{r.title}" />
+				</h:column>
+			<h:column>
+					<f:facet name="header">
+						<h:outputText value=" Description" />
+						
+					</f:facet>
+					
+					<h:outputText value="#{r.description}" escape="false"/>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#" />
+					</f:facet>
+					<h:commandButton action="#{articleBean.doSelect()}" value="View">
+						<f:setPropertyActionListener value="#{r}"
+							target="#{articleBean.a}"></f:setPropertyActionListener>
+					</h:commandButton>
+				</h:column>
+			</h:dataTable>
+			
+			<h:panelGrid columns="2" rendered="#{articleBean.showCreate}"
+				border="2">
+				<h:outputText value="title" />
+				
+  
+     				<h:inputText value="#{articleBean.a.title}" />
+     
+
+  
+
+				<h:outputText value="description" />
+				<pe:ckEditor id="editor" value="#{articleBean.a.description}" />  
+				
+				<h:outputText value="picture" />
+				<h:inputText value="#{articleBean.a.picture}" />
+				<h:commandButton action="#{articleBean.doCancel}" value="cancel" />
+				<h:commandButton action="#{articleBean.doCreateArticle()}"
+					value="Save Or Update" icon="ui-icon-disk"/>
+					<h:commandButton action="#{articleBean.doDeleteArticle()}"
+					value="Delete" />
+				</h:panelGrid>
+			</h:form>
+			
+
+  </ui:insert>
+  
+</div>
+
+<div id="footer">
+  <ui:insert name="footer">
+    	
+    	
+  </ui:insert>
+</div>
+
+</h:body>
+
+</ui:composition>
+
+</html>

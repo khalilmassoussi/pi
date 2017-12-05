@@ -7,9 +7,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import persistence.Articles;
 import persistence.Camp;
 import persistence.Refugee;
-import persistence.User;
 
 /**
  * Session Bean implementation class BasicOps
@@ -64,6 +64,7 @@ public class BasicOps implements BasicOpsRemote, BasicOpsLocal {
 		Long count = (Long) query.getSingleResult();
 		return count;
 	}
+
 	@Override
 	public Long numberOfFemales(Camp c) {
 		String jpql = "SELECT count(*) FROM Refugee u WHERE u.camp=:c and u.sexe=:Female";
@@ -84,23 +85,43 @@ public class BasicOps implements BasicOpsRemote, BasicOpsLocal {
 
 	@Override
 	public Long countUsersBySexe(String s) {
-		if(s.equals("all")){
-		String jpql = "SELECT count(*) FROM User u "; 
-		Query query = entityManager.createQuery(jpql);
-		return (Long) query.getSingleResult();}
-		else 
-		{
-			String jpql = "SELECT count(*) FROM User u WHERE u.sexe=:s "; 
-		Query query = entityManager.createQuery(jpql);
-		query.setParameter("s", s);
-		return (Long) query.getSingleResult();}
-		
-		
-		
+		if (s.equals("all")) {
+			String jpql = "SELECT count(*) FROM User u ";
+			Query query = entityManager.createQuery(jpql);
+			return (Long) query.getSingleResult();
+		} else {
+			String jpql = "SELECT count(*) FROM User u WHERE u.sexe=:s ";
+			Query query = entityManager.createQuery(jpql);
+			query.setParameter("s", s);
+			return (Long) query.getSingleResult();
+		}
+
 	}
+
 	@Override
 	public void updateUser(Refugee user) {
 		entityManager.merge(user);
 	}
-	
+
+	@Override
+	public void saveOrUpdateArticle(Articles article) {
+		entityManager.merge(article);
+	}
+
+	public List<Articles> findallArticles() {
+
+		String jpql = "SELECT u FROM Articles u";
+		Query query = entityManager.createQuery(jpql);
+		return query.getResultList();
+
+	}
+	public Articles findArticlesById(int id) {
+		return entityManager.find(Articles.class, id);
+		
+		
+	}
+	@Override
+	public void deleteArticle(Articles article) {
+		entityManager.remove(entityManager.merge(article));
+	}
 }

@@ -1,15 +1,21 @@
 package persistence;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Articles implements Serializable {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private static final long serialVersionUID = 1L;
 	private String title;
@@ -19,9 +25,19 @@ public class Articles implements Serializable {
 	private String description;
 	private Date createdAt;
 	private String picture;
-
+	@OneToMany(mappedBy="article")
+	private List<Comment> comment;
 	public Articles() {
 		super();
+	}
+
+	public Articles(String title, String description, String picture) {
+		super();
+		this.title = title;
+		this.description = description;
+		this.createdAt = Calendar.getInstance().getTime();
+		this.picture = picture;
+		
 	}
 
 	public Articles(Integer id, String title, String description, Date createdAt, String picture) {
