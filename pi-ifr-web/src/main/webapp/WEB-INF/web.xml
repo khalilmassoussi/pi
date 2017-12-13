@@ -19,4 +19,14 @@
     <filter-name>LoginFilter</filter-name>
     <url-pattern>/LoginFilter</url-pattern>
   </filter-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ImageServlet</display-name>
+    <servlet-name>ImageServlet</servlet-name>
+    <servlet-class>bean.ImageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ImageServlet</servlet-name>
+    <url-pattern>/ImageServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -1,0 +1,356 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+
+	>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+
+	template="/pages/template.xhtml">
+<f:metadata>
+        <f:viewParam name="id" value="#{articleBean.article}"
+            converter="#{aConverter}" converterMessage="Bad request. Unknown user."
+            required="true" requiredMessage="Bad request. Please use a link from within the system."
+        />
+        <f:event type="preRenderView" listener="#{articleBean.doShowView()}"/>
+    </f:metadata>
+<h:messages />
+
+
+	<ui:define name="content">
+
+						
+<section class="inner-header">
+								<div class="container">
+						
+							   <div class="row">
+        <div class="col-md-12 sec-title colored text-center">
+          <h2>
+            Blog
+          </h2>
+          <ul class="breadcumb">
+            <li>
+              <a href="index.html">Home</a>
+            </li>
+            <li>
+              <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+              <span>Blog</span>
+            </li>
+          </ul>
+          <span class="decor"><span class="inner"></span></span>
+        </div>
+      </div>
+    </div>
+    </section>
+    <section class="blog-home sec-padding blog-page blog-details">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 pull-left">
+          <div class="single-blog-post">
+            <div class="img-box">
+              <img src="img/blog-page/2.jpg" alt="" />
+            </div>
+            <div class="content-box">
+              <div class="date-box">
+                <div class="inner">
+                  <div class="date">
+                    <b>							<h:outputText value="#{articleBean.article.createdAt}" ><f:convertDateTime pattern="dd" timeZone="GMT+3" /></h:outputText>
+</b> <h:outputText value="#{articleBean.article.createdAt}" ><f:convertDateTime pattern="MMM" timeZone="GMT+3" /></h:outputText>
+                  </div>
+                  <div class="comment">
+                    <i class="flaticon-interface-1"></i> <h:outputText value="#{articleBean.reactionNumber(articleBean.article)}">  </h:outputText>
+                  </div>
+                </div>
+              </div>
+              <div class="content">
+                <a href="#"></a>
+                <h3>
+							<h:outputText value="#{articleBean.article.title}" />
+                </h3>
+               							<h:outputText value="#{articleBean.article.description}" escape="false" />
+               
+                <div class="bottom-box clearfix">
+                  <span class="pull-left">Tag: <a href="#">child, charity</a></span>
+                  <ul class="pull-right share">
+                    <li>
+                      <span>Share: </span>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-facebook"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-twitter"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-linkedin"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-google-plus"></i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="comment-box">
+            <div class="title">
+              <h2>
+                <h:outputText value="#{articleBean.reactionNumber(articleBean.article)}"></h:outputText> Comments
+              </h2>
+            </div>
+            <h:form>
+            <p:dataTable value="#{articleBean.comments}" var="r" 
+                         
+                         >
+          <p:column>  <div class="single-comment-box">
+              <div class="img-box">
+                <div class="inner-box">
+                  <img src="img/user_male2-512.png" alt="" />
+                </div>
+              </div>
+              <div class="content-box">
+                <h3>
+                 <h:outputText value="#{r.user.username}"></h:outputText>
+                 </h3>
+                <div class="meta-box clearfix">
+                  <span class="pull-left"> <h:outputText value="#{r.commentId.date}"></h:outputText></span>
+                  
+                </div>
+                <p><a href="#" class="reply pull-right">Report</a>
+                                   <h:outputText value="#{r.content}"></h:outputText>
+
+                </p>
+              </div>
+            </div>
+            </p:column>
+           </p:dataTable>
+            </h:form>
+          </div>
+          <div class="comment-form contact-content">
+            <h2>
+              Leave a Comment
+            </h2>
+            <form action="inc/sendemail.php" class="contact-form row" id="contact-page-contact-form">
+              <h:form>
+              <div class="col-md-6">
+              
+                    <p:inputTextarea rows="10" cols="50" queryDelay="750" minQueryLength="4" value="#{articleBean.comment.content}" />
+
+              </div>
+              <div class="col-md-6"><p:link action="doAddComment()" value="cc"></p:link>
+                 <button
+                class="thm-btn" type="submit">Send</button>
+              </div>
+              </h:form>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-4 pull-right">
+          <div class="side-bar-widget">
+            <div class="single-sidebar-widget search">
+              <form action="#">
+                <input type="text" /> <button type="submit"><i
+                class="fa fa-search"></i></button>
+              </form>
+            </div>
+            <div class="single-sidebar-widget category">
+              <h3 class="title">
+                Catagories
+              </h3>
+              <ul>
+                <li>
+                  <a href="#">Child</a>
+                </li>
+                <li>
+                  <a href="#">Charity</a>
+                </li>
+                <li>
+                  <a href="#">Sponsorship</a>
+                </li>
+                <li>
+                  <a href="#">Volunteers</a>
+                </li>
+                <li>
+                  <a href="#">Feed</a>
+                </li>
+              </ul>
+            </div>
+            <div class="single-sidebar-widget popular-post">
+              <h3 class="title">
+                Popular Posts
+              </h3>
+              <ul>
+                <li>
+                  <div class="img-box">
+                    <div class="inner-box">
+                      <img src="img/blog-page/s1.jpg" alt="" />
+                    </div>
+                  </div>
+                  <div class="content-box">
+                    <a href="#"></a>
+                    <h4>
+                      Lorem Ipsum is simply dumm textand somthing more here
+                    </h4>
+                    <span>17 jun, 2015</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="img-box">
+                    <div class="inner-box">
+                      <img src="img/blog-page/s2.jpg" alt="" />
+                    </div>
+                  </div>
+                  <div class="content-box">
+                    <a href="#"></a>
+                    <h4>
+                      Lorem Ipsum is simply dumm textand somthing more here
+                    </h4>
+                    <span>17 jun, 2015</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="img-box">
+                    <div class="inner-box">
+                      <img src="img/blog-page/s3.jpg" alt="" />
+                    </div>
+                  </div>
+                  <div class="content-box">
+                    <a href="#"></a>
+                    <h4>
+                      Lorem Ipsum is simply dumm textand somthing more here
+                    </h4>
+                    <span>17 jun, 2015</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="img-box">
+                    <div class="inner-box">
+                      <img src="img/blog-page/s4.jpg" alt="" />
+                    </div>
+                  </div>
+                  <div class="content-box">
+                    <a href="#"></a>
+                    <h4>
+                      Lorem Ipsum is simply dumm textand somthing more here
+                    </h4>
+                    <span>17 jun, 2015</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="single-sidebar-widget archive">
+              <h3 class="title">
+                Archive
+              </h3>
+              <ul>
+                <li>
+                  <a href="#">October 2015</a>
+                </li>
+                <li>
+                  <a href="#">November 2015</a>
+                </li>
+                <li>
+                  <a href="#">December 2015</a>
+                </li>
+                <li>
+                  <a href="#">January 2016</a>
+                </li>
+                <li>
+                  <a href="#">February 2016</a>
+                </li>
+              </ul>
+            </div>
+            <div class="single-sidebar-widget tags">
+              <h3 class="title">
+                Keywords
+              </h3>
+              <ul>
+                <li>
+                  <a href="#">Child</a>
+                </li>
+                <li>
+                  <a href="#">Charity</a>
+                </li>
+                <li>
+                  <a href="#">Sponsorship</a>
+                </li>
+                <li>
+                  <a href="#">Volunteers</a>
+                </li>
+                <li>
+                  <a href="#">Feed</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    	</section>
+    <section class="p_40" data-bg-color="#eee">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="clients-carousel owl-carousel owl-theme">
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-6.png" alt="" />
+              </div>
+            </div>
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-7.png" alt="" />
+              </div>
+            </div>
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-8.png" alt="" />
+              </div>
+            </div>
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-9.png" alt="" />
+              </div>
+            </div>
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-10.png" alt="" />
+              </div>
+            </div>
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-7.png" alt="" />
+              </div>
+            </div>
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-7.png" alt="" />
+              </div>
+            </div>
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-10.png" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    	</section>
+    
+   
+						
+
+
+</ui:define>
+</ui:composition>
+
+</html>

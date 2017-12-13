@@ -1,8 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
@@ -11,111 +10,516 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:pe="http://primefaces.org/ui/extensions"
-	xmlns:ck="http://code.google.com/ck-jsf-editor">
-	<h:head>
-		<title><ui:insert name="title">Default title</ui:insert></title>
-	</h:head>
+	xmlns:ck="http://code.google.com/ck-jsf-editor"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pk="http://primefaces.org/ui" template="/pages/template.xhtml">
 
-	<h:body>
 
-		<div id="header">
-			<ui:insert name="header">
 
-				<!--  include your header file or uncomment the include below and create header.xhtml in this directory -->
-				<!-- <ui:include src="header.xhtml"/> -->
-			</ui:insert>
+	<ui:define name="content">
+	<ui:fragment rendered="#{not articleBean.showView}">
+		<section class="inner-header">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 sec-title colored text-center">
+					<h2>Blog</h2>
+					<ul class="breadcumb">
+						<li><a href="index.html">Home</a></li>
+						<li><i class="fa fa-angle-right"></i></li>
+						<li><span>Blog</span></li>
+					</ul>
+					<span class="decor"><span class="inner"></span></span>
+				</div>
+			</div>
 		</div>
+		</section>
+		<section class="blog-home sec-padding blog-page">
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 pull-left">
+					<h:form>
+						<pk:dataTable value="#{articleBean.articles}" var="r"
+							styleClass="borderless">
+							<pk:column>
+								<div class="single-blog-post">
+									<div class="img-box">
+										<pk:graphicImage value="/images/#{r.picture}" width="780" height="400"></pk:graphicImage>
 
 
-		<div id="content">
-			<ui:insert name="content">
-				<h:form>
+										<div class="overlay">
+											<div class="box">
+												<div class="content">
+													<ul>
+														<li> <pk:link outcome="SingleArticle">
+    <f:param name="id" value="#{r.id}" />
+<i
+																class="fa fa-link"></i></pk:link></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="content-box">
+										<div class="date-box">
+											<div class="inner">
+												<div class="date">
+													<b><h:outputText value="#{r.createdAt}">
+															<f:convertDateTime pattern="dd" timeZone="GMT+3" />
+														</h:outputText></b>
+													<h:outputText value="#{r.createdAt}">
+														<f:convertDateTime pattern="MMM" timeZone="GMT+3" />
+													</h:outputText>
+												</div>
+												<div class="comment">
+													<i class="flaticon-interface-1"></i>
+													<h:outputText value="#{articleBean.reactionNumber(r)}"></h:outputText>
+												</div>
+											</div>
+										</div>
+										<div class="content">
+											<a href="SingleArticle.jsf">
+												<h3>
+													 <h:commandLink  value="#{r.title}" action="#{articleBean.doShowView(r)}">
+   
+</h:commandLink >
+												</h3>
+											</a>
+											<p>
 
-					<h:dataTable value="#{articleBean.articles}" var="r" border="2"
-						rendered="#{not articleBean.showCreate}">
+												
+												
+												<h:outputText
+													value="#{r.description.length() gt 50 ? r.description.substring(0,53).concat('...') : r.description}"></h:outputText>
 
-						<h:column>
-							<f:facet name="header">
-								<h:outputText value="Title" />
-							</f:facet>
-							<h:outputText value="#{r.title}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">
-								<h:outputText value=" Description" />
+											</p>
 
-							</f:facet>
+											<span>Tag: <a href="blog-details.html">child,
+													charity</a></span>
+										</div>
+									</div>
+								</div>
+							</pk:column>
+						</pk:dataTable>
+					</h:form>
+					<!--  Pagination -->
 
-							<h:outputText value="#{r.description}" escape="false" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">
-								<h:outputText value="#" />
-							</f:facet>
-							<h:commandButton action="#{articleBean.doSelect()}" value="View">
-								<f:setPropertyActionListener value="#{r}"
-									target="#{articleBean.a}"></f:setPropertyActionListener>
-							</h:commandButton>
-						</h:column>
-					</h:dataTable>
+				</div>
+				<div class="col-md-4 pull-right">
+					<div class="side-bar-widget">
+						<div class="single-sidebar-widget search">
+							<form action="#">
+								<input type="text" />
+								<button type="submit">
+									<i class="fa fa-search"></i>
+								</button>
+							</form>
+						</div>
+						<div class="single-sidebar-widget category">
+							<h3 class="title">Catagories</h3>
+							<ul>
+								<li><a href="#">Child</a></li>
+								<li><a href="#">Charity</a></li>
+								<li><a href="#">Sponsorship</a></li>
+								<li><a href="#">Volunteers</a></li>
+								<li><a href="#">Feed</a></li>
+							</ul>
+						</div>
+						<div class="single-sidebar-widget popular-post">
+							<h3 class="title">Popular Posts</h3>
+							<ul>
+								<li>
+									<div class="img-box">
+										<div class="inner-box">
+												<pk:graphicImage
+													value="/images/#{articleBean.mostActive.picture}"
+													width="70" height="65"></pk:graphicImage>
 
-					<h:panelGrid columns="2" rendered="#{articleBean.showCreate}"
-						border="2">
-						<h:outputText value="title" />
-
-
-						<h:outputText value="#{articleBean.a.title}" />
-
-
-
-						<h:outputText value="description" />
-						<h:outputText value="#{articleBean.a.description}" escape="false" />
-
-						<h:outputText value="picture" />
-						<h:outputText value="#{articleBean.a.picture}" />
-						<h:commandButton action="#{articleBean.doCancel}" value="Cancel" />
-
-					</h:panelGrid>
-						<h:outputText value="Comment"></h:outputText>
-<p:messages id="msgs" />
-					<h:panelGrid columns="2" rendered="#{articleBean.showCreate}">
-						<h:inputText value="#{articleBean.comment.content}" required="true" id="comment" label="Comment"/><p:message for="comment" display="icon" />
-						<h:commandButton action="#{articleBean.doAddComment()}"
-							value="Add" />
-					</h:panelGrid>
-					<h:dataTable value="#{articleBean.comments}" var="r" border="2"
-						rendered="#{articleBean.showCreate}">
-
-						<h:column>
-							<f:facet name="header">
-								<h:outputText value="User" />
-							</f:facet>
-							<h:outputText value="#{r.user.username}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">
-								<h:outputText value=" Content" />
-
-							</f:facet>
-
-							<h:outputText value="#{r.content}" escape="false" />
-						</h:column>
-
-					</h:dataTable>
-				</h:form>
-
-			</ui:insert>
-
+											</div>
+									</div>
+									<div class="content-box">
+										<a href="#"></a>
+										<h4><h:outputText value="#{articleBean.mostActive.title}"></h:outputText>
+										</h4>
+										<span><h:outputText value="#{articleBean.mostActive.createdAt}"></h:outputText></span>
+									</div>
+								</li>
+								
+							</ul>
+						</div>
+						<div class="single-sidebar-widget archive">
+							<h3 class="title">Archive</h3>
+							<ul>
+								<li><a href="#">October 2015</a></li>
+								<li><a href="#">November 2015</a></li>
+								<li><a href="#">December 2015</a></li>
+								<li><a href="#">January 2016</a></li>
+								<li><a href="#">February 2016</a></li>
+							</ul>
+						</div>
+						<div class="single-sidebar-widget tags">
+							<h3 class="title">Keywords</h3>
+							<ul>
+								<li><a href="#">Child</a></li>
+								<li><a href="#">Charity</a></li>
+								<li><a href="#">Sponsorship</a></li>
+								<li><a href="#">Volunteers</a></li>
+								<li><a href="#">Feed</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-
-		<div id="footer">
-			<ui:insert name="footer">
-
-
-			</ui:insert>
+		</section>
+		<section class="p_40" data-bg-color="#eee">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="clients-carousel owl-carousel owl-theme">
+						<div class="item">
+							<div class="img-box">
+								<img src="img/clients/logo-6.png" alt="" />
+							</div>
+						</div>
+						<div class="item">
+							<div class="img-box">
+								<img src="img/clients/logo-7.png" alt="" />
+							</div>
+						</div>
+						<div class="item">
+							<div class="img-box">
+								<img src="img/clients/logo-8.png" alt="" />
+							</div>
+						</div>
+						<div class="item">
+							<div class="img-box">
+								<img src="img/clients/logo-9.png" alt="" />
+							</div>
+						</div>
+						<div class="item">
+							<div class="img-box">
+								<img src="img/clients/logo-10.png" alt="" />
+							</div>
+						</div>
+						<div class="item">
+							<div class="img-box">
+								<img src="img/clients/logo-7.png" alt="" />
+							</div>
+						</div>
+						<div class="item">
+							<div class="img-box">
+								<img src="img/clients/logo-7.png" alt="" />
+							</div>
+						</div>
+						<div class="item">
+							<div class="img-box">
+								<img src="img/clients/logo-10.png" alt="" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
+		</section>
+</ui:fragment>
+<ui:fragment rendered="#{articleBean.showView}">
+<section class="inner-header">
+								<div class="container">
+						
+							   <div class="row">
+        <div class="col-md-12 sec-title colored text-center">
+          <h2>
+            Blog
+          </h2>
+          <ul class="breadcumb">
+            <li>
+              <a href="index.html">Home</a>
+            </li>
+            <li>
+              <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+              <span>Blog</span>
+            </li>
+          </ul>
+          <span class="decor"><span class="inner"></span></span>
+        </div>
+      </div>
+    </div>
+    </section>
+    <section class="blog-home sec-padding blog-page blog-details">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 pull-left">
+          <div class="single-blog-post">
+            <div class="img-box">
+             										<pk:graphicImage value="/images/#{articleBean.a.picture}" width="780" height="400"></pk:graphicImage>
 
-	</h:body>
+            </div>
+            <div class="content-box">
+              <div class="date-box">
+                <div class="inner">
+                  <div class="date">
+                    <b>							<h:outputText value="#{articleBean.a.createdAt}" ><f:convertDateTime pattern="dd" timeZone="GMT+3" /></h:outputText>
+</b> <h:outputText value="#{articleBean.a.createdAt}" ><f:convertDateTime pattern="MMM" timeZone="GMT+3" /></h:outputText>
+                  </div>
+                  <div class="comment">
+                    <i class="flaticon-interface-1"></i>							<h:outputText value="#{articleBean.reactionNumber(articleBean.a)}" />
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="content">
+                <a href="#"></a>
+                <h3>
+                
+							<h:outputText value="#{articleBean.a.title}" />
+                </h3>
+               							<h:outputText value="#{articleBean.a.description}" escape="false" />
+               
+                <div class="bottom-box clearfix">
+                  <span class="pull-left">Tag: <a href="#">child, charity</a></span>
+                  <ul class="pull-right share">
+                    <li>
+                      <span>Share: </span>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-facebook"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-twitter"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-linkedin"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-google-plus"></i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="comment-box">
+            <div class="title">
+              <h2>
+                Comments
+              </h2>
+            </div>
+            
+            <pk:dataTable value="#{articleBean.comments}" var="r" 
+                         
+                         >
+          <pk:column>  <div class="single-comment-box">
+              <div class="img-box">
+                <div class="inner-box">
+                  <img src="img/user_male2-512.png" alt="" />
+                </div>
+              </div>
+              <div class="content-box">
+                <h3>
+                 <h:outputText value="#{r.user.username}"></h:outputText>
+                 </h3>
+                <div class="meta-box clearfix">
+                  <span class="pull-left"> <h:outputText value="#{r.commentId.date}"></h:outputText></span>
+                  
+                </div>
+                <p><a href="#" class="reply pull-right"><h:outputText value="Report" rendered="#{r.user.id != identity.user.id}"></h:outputText></a>
+                                   <h:outputText value="#{r.content}"></h:outputText>
+
+                </p><h:form>
+                <h:commandLink value="Delete Comment" rendered="#{r.user.id == identity.user.id}" action="#{articleBean.doDeleteComment(r)}"></h:commandLink>
+              </h:form></div>
+            </div>
+            </pk:column>
+           </pk:dataTable>
+           
+          </div>
+                  <h:form>
+          
+          <div class="comment-form contact-content">
+            <h2>
+              Leave a Comment 
+            </h2>
+            
+              						
+              
+              <div class="col-md-6">
+              
+                    <pk:inputTextarea rows="10" cols="50" queryDelay="750" minQueryLength="4" value="#{articleBean.comment.content}" />
+
+              </div>
+              <div class="col-md-6">
+                  <h:commandLink actionListener="#{articleBean.doAddComment()}"
+					 ><button
+                class="thm-btn" type="submit">Send</button></h:commandLink>
+              </div>
+            
+            
+          </div>
+          </h:form>
+        </div>            
+        
+        <div class="col-md-4 pull-right">
+          <div class="side-bar-widget">
+            <div class="single-sidebar-widget search">
+              <form action="#">
+                <input type="text" /> <button type="submit"><i
+                class="fa fa-search"></i></button>
+              </form>
+            </div>
+            <div class="single-sidebar-widget category">
+              <h3 class="title">
+                Catagories
+              </h3>
+              <ul>
+                <li>
+                  <a href="#">Child</a>
+                </li>
+                <li>
+                  <a href="#">Charity</a>
+                </li>
+                <li>
+                  <a href="#">Sponsorship</a>
+                </li>
+                <li>
+                  <a href="#">Volunteers</a>
+                </li>
+                <li>
+                  <a href="#">Feed</a>
+                </li>
+              </ul>
+            </div>
+            <div class="single-sidebar-widget popular-post">
+              <h3 class="title">
+                Popular Posts
+              </h3>
+              <ul>
+               <li>
+									<div class="img-box">
+										<div class="inner-box">
+												<pk:graphicImage
+													value="/images/#{articleBean.mostActive.picture}"
+													width="70" height="65"></pk:graphicImage>
+
+											</div>
+									</div>
+									<div class="content-box">
+										<a href="#"></a>
+										<h4><h:outputText value="#{articleBean.mostActive.title}"></h:outputText>
+										</h4>
+										<span><h:outputText value="#{articleBean.mostActive.createdAt}"></h:outputText></span>
+									</div>
+								</li>
+              </ul>
+            </div>
+            <div class="single-sidebar-widget archive">
+              <h3 class="title">
+                Archive
+              </h3>
+              <ul>
+                <li>
+                  <a href="#">October 2015</a>
+                </li>
+                <li>
+                  <a href="#">November 2015</a>
+                </li>
+                <li>
+                  <a href="#">December 2015</a>
+                </li>
+                <li>
+                  <a href="#">January 2016</a>
+                </li>
+                <li>
+                  <a href="#">February 2016</a>
+                </li>
+              </ul>
+            </div>
+            <div class="single-sidebar-widget tags">
+              <h3 class="title">
+                Keywords
+              </h3>
+              <ul>
+                <li>
+                  <a href="#">Child</a>
+                </li>
+                <li>
+                  <a href="#">Charity</a>
+                </li>
+                <li>
+                  <a href="#">Sponsorship</a>
+                </li>
+                <li>
+                  <a href="#">Volunteers</a>
+                </li>
+                <li>
+                  <a href="#">Feed</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    	</section>
+    <section class="p_40" data-bg-color="#eee">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="clients-carousel owl-carousel owl-theme">
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-6.png" alt="" />
+              </div>
+            </div>
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-7.png" alt="" />
+              </div>
+            </div>
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-8.png" alt="" />
+              </div>
+            </div>
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-9.png" alt="" />
+              </div>
+            </div>
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-10.png" alt="" />
+              </div>
+            </div>
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-7.png" alt="" />
+              </div>
+            </div>
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-7.png" alt="" />
+              </div>
+            </div>
+            <div class="item">
+              <div class="img-box">
+                <img src="img/clients/logo-10.png" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    	</section>
+    	
+    	</ui:fragment>
+	</ui:define>
+
+
+
 
 </ui:composition>
 
